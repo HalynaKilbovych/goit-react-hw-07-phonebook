@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { nanoid } from "nanoid";
 import { Form, Label, Input, Button } from "./ContactForm.styled";
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, getContacts } from 'redux/contactSlice';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -10,10 +11,11 @@ export const ContactForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleChange = e => {
     const { name, value } = e.target;
+
     switch (name) {
       case 'name':
         setName(value);
@@ -36,7 +38,7 @@ export const ContactForm = () => {
       setErrorMessage('OOPs..Contact already exists');
       return;
     } else {
-      dispatch(addContact({ id: nanoid(4), name, number }));
+      dispatch(addContact({ id: nanoid(), name, number, createdAt: Date.now() }));
       resetForm();
     }
   };
