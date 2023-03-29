@@ -23,6 +23,7 @@ const handleAsyncAction = (state, action) => {
       items: action.payload,
     };
   }
+  return state;
 };
 
 export const contactsSlice = createSlice({
