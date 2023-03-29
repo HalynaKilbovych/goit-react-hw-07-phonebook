@@ -1,14 +1,20 @@
 import { List, Item, DeleteButton } from './ContactList.styled';
-import { useSelector, useDispatch } from 'react-redux';
-import { getFilterValue } from 'redux/filterSlice';
-import { deleteContact } from 'redux/operations';
-import { selectContacts } from 'redux/selectors';
-import { Notification } from 'components/Notifacation/Notifacation';
+import { useSelector, useDispatch} from 'react-redux';
+import { useEffect } from 'react';
+import { deleteContact, fetchContacts } from 'redux/operations';
+import { selectContacts, selectError, selectFilter } from 'redux/selectors';
+import { notificationNoContact, notificationError } from 'components/Notifacation/Notifacation';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
   const contacts = useSelector(selectContacts);
-  const filter = useSelector(getFilterValue);
+  const onError = useSelector(selectError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
 
   const filteredContacts = () => {
     const normalizedFilter = filter.toLowerCase();
@@ -16,22 +22,26 @@ export const ContactList = () => {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
     if (filtered.length === 0 && filter) {
-      Notification();
+      notificationNoContact(); 
     }
-    // if (onError) {
-    //   Notification();
-    // }
+    if (onError) {
+      notificationError();
+    }
     return filtered;
   };
 
   const contactsToDisplay = filteredContacts(); 
+
 
   return (
     <List>
       {contactsToDisplay.map(({ id, name, number }) => (
         <Item key={id}>
           {name}: {number}
-          <DeleteButton type="button" onClick={() => dispatch(deleteContact(id))}>
+          <DeleteButton 
+              type="button"   
+              onClick={() => dispatch(deleteContact(id))} 
+          >
             Delete
           </DeleteButton>
         </Item>

@@ -1,11 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact } from "./operations";
 
-const handleAsyncAction = (state, action, callback) => {
-  state.isLoading = action.meta.requestStatus === 'pending';
-  state.error = action.meta.requestStatus === 'rejected' ? action.payload : null;
+const handleAsyncAction = (state, action) => {
+  if (action.meta.requestStatus === 'pending') {
+    return {
+      ...state,
+      isLoading: true,
+      error: null,
+    };
+  }
+  if (action.meta.requestStatus === 'rejected') {
+    return {
+      ...state,
+      isLoading: false,
+      error: action.payload,
+    };
+  }
   if (action.meta.requestStatus === 'fulfilled') {
-    callback(state, action);
+    return {
+      ...state,
+      isLoading: false,
+      items: action.payload,
+    };
   }
 };
 
@@ -19,7 +35,7 @@ export const contactsSlice = createSlice({
   extraReducers: {
     [fetchContacts.pending]: handleAsyncAction,
     [fetchContacts.fulfilled]: (state, action) => {
-      state.item = action.payload;
+      state.items = action.payload;
     },
     [fetchContacts.rejected]: handleAsyncAction,
     [addContact.pending]: handleAsyncAction,

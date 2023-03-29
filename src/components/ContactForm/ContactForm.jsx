@@ -4,6 +4,7 @@ import { Form, Label, Input, Button } from "./ContactForm.styled";
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/operations';
 import { selectContacts } from 'redux/selectors';
+import { notificationSameName, notificationSameNumber } from 'components/Notifacation/Notifacation';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
@@ -35,10 +36,13 @@ export const ContactForm = () => {
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
-      setErrorMessage('OOPs..Contact already exists');
+      notificationSameName(name);
+      return;
+    } else if (contacts.find(contact => contact.number === number)) {
+      notificationSameNumber(number);
       return;
     } else {
-      dispatch(addContact({ id: nanoid(), name, number, createdAt: Date.now() }));
+      dispatch(addContact({ name, phone: number, id: nanoid() }));
       resetForm();
     }
   };
