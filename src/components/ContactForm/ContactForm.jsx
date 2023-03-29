@@ -77,7 +77,7 @@ export const ContactForm = () => {
           required
         />
       </Label>
-      <Button type="submit">Add contact</Button>
+      <Button type="submit">Add contacts</Button>
     </Form>
   );
 };
