@@ -1,8 +1,8 @@
 import { List, Item, DeleteButton } from './ContactList.styled';
 import { useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
-import { deleteContact, fetchContacts } from 'redux/operations';
-import { selectContacts, selectError, selectFilter,selectIsLoading } from 'redux/selectors';
+import { deleteContact, fetchContacts } from 'redux/contact/operations';
+import { selectContacts, selectError, selectFilter,selectIsLoading } from 'redux/contact/selectors';
 import { notificationNoContact, notificationError } from 'components/Notifacation/Notifacation';
 import { Loader } from "components/Loader/Loader";
 
@@ -27,9 +27,6 @@ export const ContactList = () => {
     if (filtered.length === 0 && filter) {
       notificationNoContact(); 
     }
-    if (onError) {
-      notificationError();
-    }
     return filtered;
   };
 
@@ -39,9 +36,10 @@ export const ContactList = () => {
   return (
     <List>
       {isLoading && <Loader />}
-      {contactsToDisplay.map(({ id, name, number }) => (
+      {onError && notificationError()}
+      {contactsToDisplay.map(({ id, name, phone }) => (
         <Item key={id}>
-          {name}: {number}
+          {name}: {phone}
           <DeleteButton 
               type="button"   
               onClick={() => dispatch(deleteContact(id))} 

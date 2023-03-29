@@ -4,7 +4,7 @@ import { ContactList } from "components/ContactList/ContactList";
 import { Filter } from "components/Filter/Filter";
 import { Wrapper, Title, ContactTitle } from "./PhoneBookApp.styled";
 import { Loader } from "components/Loader/Loader";
-import { selectIsLoading } from "redux/selectors";
+import { selectIsLoading } from "redux/contact/selectors";
 
 export const PhoneBookApp = () => {
 
