@@ -9,7 +9,6 @@ import { selectIsLoading } from "redux/selectors";
 export const PhoneBookApp = () => {
 
   const isLoading = useSelector(selectIsLoading);
-  console.log(isLoading); 
 
   return (
     <Wrapper>
