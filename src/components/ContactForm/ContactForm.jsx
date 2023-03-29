@@ -9,7 +9,6 @@ import { notificationSameName, notificationSameNumber } from 'components/Notifac
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
@@ -50,12 +49,10 @@ export const ContactForm = () => {
   const resetForm = () => {
     setName('');
     setNumber('');
-    setErrorMessage('');
   };
 
   return (
     <Form onSubmit={handleSubmitForm}>
-      {errorMessage && <p>{errorMessage}</p>}
       <Label>
         Name
         <Input
